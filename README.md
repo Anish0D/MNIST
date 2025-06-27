@@ -1,0 +1,1 @@
+This is a ReadME fror the MNIST dataset to use Neural Networks
