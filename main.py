@@ -71,7 +71,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 model.train()
 
 # The number of times im going to test it (in this case 10)
-
+accuracies = []
 for epoch in range(10):
     # keeping track of loss
     total_loss = 0
@@ -107,5 +107,11 @@ for epoch in range(10):
 
     # Keeps track of the loss per epoch AND the accuracy too, so we can see how good it is
     accuracy = 100 * correct / total
+    accuracies.append(accuracy)
     print(f"Epoch {epoch+1}, Loss:{total_loss:.4f}, Accuracy:{accuracy:.2f}%") # the .4 and .2 are just how many numbers i want past the decimal points 
-    
+
+# Graphing accuracy growth
+plt.plot(range(1, 11), accuracies)
+plt.ylabel('Accuracy in %')
+plt.xlabel('Number of epochs run')
+plt.show()
