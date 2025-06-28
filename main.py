@@ -66,13 +66,33 @@ loss_fn = nn.CrossEntropyLoss()
 model = Classifier() #Creates one real instance of my machine
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
+# An Evaluation Function for the Model on testing data
+def evaluate(model, test_loader, loss_fn):
+    model.eval()
+    total_loss = 0
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for images, labels in test_loader:
+            outputs = model(images)
+            loss = loss_fn(outputs, labels)
+            total_loss += loss.item()
+
+            _, predicted = torch.max(outputs, 1)
+            correct += (predicted == labels).sum().item()
+            total += labels.size(0)
+    avg_loss = total_loss / len(test_loader)
+    accuracy = 100 * correct / total
+    return avg_loss, accuracy
+
 # TRAINING LOOP TIME >:)
 
 model.train()
 
-# The number of times im going to test it (in this case 10)
+# The number of times im going to test it (in this case 20)
 accuracies = []
-for epoch in range(10):
+for epoch in range(50):
     # keeping track of loss
     total_loss = 0
 
@@ -110,8 +130,17 @@ for epoch in range(10):
     accuracies.append(accuracy)
     print(f"Epoch {epoch+1}, Loss:{total_loss:.4f}, Accuracy:{accuracy:.2f}%") # the .4 and .2 are just how many numbers i want past the decimal points 
 
+# After training finishes, evaluate on test data
+test_loss, test_accuracy = evaluate(model, test_loader, loss_fn)
+print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%")
+
+# Save the trained model
+torch.save(model.state_dict(), 'mnist_model.pth')
+print("Model saved as mnist_model.pth")
+
+
 # Graphing accuracy growth
-plt.plot(range(1, 11), accuracies)
+plt.plot(range(1, 51), accuracies)
 plt.ylabel('Accuracy in %')
 plt.xlabel('Number of epochs run')
 plt.show()

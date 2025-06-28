@@ -7,3 +7,6 @@ The Universal workflow for a Neural Network is to:
 3) Choose an optimizer
 4) Write a loop so it trains through the data
 5) Test it with the data it has not seen yet
+
+First Run on 50 Epochs!
+![alt text](image.png)
