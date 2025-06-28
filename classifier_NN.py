@@ -26,11 +26,6 @@ test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, d
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
 
-classes = ('zero', 'one', 'two', 'three',
-           'four', 'five', 'six', 'seven',
-           'eight', 'nine')
-
-
 #CREATING ARCHITECTURE
 
 # Building the model from the nn.Module base that pytorch has
