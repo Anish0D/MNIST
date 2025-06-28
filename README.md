@@ -1,1 +1,1 @@
-This is a ReadME fror the MNIST dataset to use Neural Networks
+This is a ReadME for the MNIST dataset to use Neural Networks
