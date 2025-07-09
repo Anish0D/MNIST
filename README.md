@@ -10,3 +10,6 @@ The Universal workflow for a Neural Network is to:
 
 First Run on 50 Epochs!
 ![alt text](image.png)
+
+First Run of the Autoencoder on MNIST dataset
+![alt text](AENN_Run1.png)

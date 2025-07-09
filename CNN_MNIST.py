@@ -87,7 +87,8 @@ model.train()
 accuracies = []
 for epoch in range(0, 31):
      # keeping track of loss
-    total_loss = 0
+    train_loss = 0
+    test_loss = 0
 
     # I want to track accuracy as well
     correct = 0
@@ -95,7 +96,7 @@ for epoch in range(0, 31):
 
     for images, labels in train_loader:
         images, labels = images.to(device), labels.to(device)
-
+     
         outputs = model(images)
         loss = loss_calc(outputs, labels)
 
@@ -103,19 +104,32 @@ for epoch in range(0, 31):
         loss.backward()
         optimizer.step()
 
-        total_loss += loss.item()
+        train_loss += loss.item()
 
          # I ChatGPTed this for an accuracy calculation
         _, predicted = torch.max(outputs, 1)         # get the index of the highest score for each image
         correct += (predicted == labels).sum().item()  # count how many were right
         total += labels.size(0)                       # total images in this batch
 
-    print(f"Epoch {epoch+1}, Loss: {total_loss:.4f}")
+    for images, labels in test_loader:
+        images, labels = images.to(device), labels.to(device)
+
+        outputs = model(images)
+        loss = loss_calc(outputs, labels)
+
+        test_loss += loss.item()
+
+         # I ChatGPTed this for an accuracy calculation
+        _, predicted = torch.max(outputs, 1)         # get the index of the highest score for each image
+        correct += (predicted == labels).sum().item()  # count how many were right
+        total += labels.size(0)                       # total images in this batch
+
+    print(f"Epoch {epoch+1}, Loss: {test_loss:.4f}")
 
     # Keeps track of the loss per epoch AND the accuracy too, so we can see how good it is
     accuracy = 100 * correct / total
     accuracies.append(accuracy)
-    print(f"Epoch {epoch+1}, Loss:{total_loss:.4f}, Accuracy:{accuracy:.2f}%") # the .4 and .2 are just how many numbers i want past the decimal points 
+    print(f"Epoch {epoch+1}, Loss:{test_loss:.4f}, Accuracy:{accuracy:.2f}%") # the .4 and .2 are just how many numbers i want past the decimal points 
 
 # Save the trained model
 torch.save(model.state_dict(), 'CNN_MNIST.pth')
